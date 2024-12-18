@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const paymentRoutes = require('./routes/payment.js');
+const paymentRoutes = require('./routes/payment');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -13,6 +13,11 @@ app.get('/', (req, res) => {
   res.send('Hello!');
 });
 
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
+
+
 // Routes
 app.use('/api/payment', paymentRoutes);
 
@@ -20,11 +25,5 @@ app.use('/api/payment', paymentRoutes);
 app.get('/api', (req, res) => {
   res.send('Backend is running!');
 });
-
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Backend running at http://localhost:${PORT}`);
-});
-
 
 
