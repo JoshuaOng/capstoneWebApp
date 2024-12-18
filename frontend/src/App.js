@@ -45,7 +45,7 @@ const App = () => {
   }, [stripe]);
 
   // Listen to the paymentmethod event
-  pr.on('paymentmethod', async (ev) => {
+  paymentRequest.on('paymentmethod', async (ev) => {
     console.log('Payment method received:', ev.paymentMethod);
 
     // Confirm the payment with your backend
