@@ -44,29 +44,6 @@ const App = () => {
     }
   }, [stripe]);
 
-  // Listen to the paymentmethod event
-  paymentRequest.on('paymentmethod', async (ev) => {
-    console.log('Payment method received:', ev.paymentMethod);
-
-    // Confirm the payment with your backend
-    const { error } = await stripe.confirmCardPayment(
-      clientSecret, {
-      payment_method: ev.paymentMethod.id,
-    }
-    );
-
-    if (error) {
-      console.error('Payment confirmation error:', error);
-      ev.complete('fail'); // Notify the UI that the payment failed
-    } else {
-
-      console.log('Payment successful!');
-      ev.complete('success'); // Notify the UI that the payment succeeded
-      // Optionally redirect or show success message
-    }
-  }
-  );
-
   // Handle the confirmation of the payment
   const onConfirm = async () => {
     if (!stripe || !elements || !clientSecret) return; // Ensure Stripe.js and elements are loaded
@@ -90,6 +67,28 @@ const App = () => {
 
   // If PaymentRequestButton is available, render it
   if (paymentRequest) {
+    // Listen to the paymentmethod event
+    paymentRequest.on('paymentmethod', async (ev) => {
+      console.log('Payment method received:', ev.paymentMethod);
+
+      // Confirm the payment with your backend
+      const { error } = await stripe.confirmCardPayment(
+        clientSecret, {
+        payment_method: ev.paymentMethod.id,
+      }
+      );
+
+      if (error) {
+        console.error('Payment confirmation error:', error);
+        ev.complete('fail'); // Notify the UI that the payment failed
+      } else {
+
+        console.log('Payment successful!');
+        ev.complete('success'); // Notify the UI that the payment succeeded
+        // Optionally redirect or show success message
+      }
+    }
+    );
     return <PaymentRequestButtonElement options={{ paymentRequest }} />;
   }
 
