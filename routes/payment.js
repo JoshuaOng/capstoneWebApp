@@ -11,7 +11,7 @@ router.post('/create-payment-intent', async (req, res) => {
       const paymentIntent = await stripe.paymentIntents.create({
         amount,
         currency,
-        payment_method_types: ['card', 'applepay'], // Add Apple Pay support if needed
+        automatic_payment_methods: {enabled: true}
       });
   
       res.json({ clientSecret: paymentIntent.client_secret });
