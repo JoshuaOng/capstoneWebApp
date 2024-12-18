@@ -15,7 +15,7 @@ const App = () => {
         currency: 'sgd',
         total: {
           label: 'Demo total',
-          amount: 10, // Amount in cents
+          amount: 50, // Amount in cents
         },
         requestPayerName: false,
         requestPayerEmail: false,
@@ -33,7 +33,7 @@ const App = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          amount: 10, // Match the amount and currency used in the PaymentRequest
+          amount: 50, // Match the amount and currency used in the PaymentRequest
           currency: 'sgd',
         }),
       })
