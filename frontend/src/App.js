@@ -15,10 +15,10 @@ const App = () => {
         currency: 'sgd',
         total: {
           label: 'Demo total',
-          amount: 1099, // Amount in cents
+          amount: 10, // Amount in cents
         },
-        requestPayerName: true,
-        requestPayerEmail: true,
+        requestPayerName: false,
+        requestPayerEmail: false,
       });
 
       // Check if the device can make payments
@@ -33,12 +33,13 @@ const App = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          amount: 1099, // Match the amount and currency used in the PaymentRequest
+          amount: 10, // Match the amount and currency used in the PaymentRequest
           currency: 'sgd',
         }),
       })
         .then((res) => res.json())
         .then((data) => setClientSecret(data.clientSecret))
+        .then(console.log("successfully fetched secret"))
         .catch((error) => console.error('Error fetching clientSecret:', error));
     }
   }, [stripe]);
