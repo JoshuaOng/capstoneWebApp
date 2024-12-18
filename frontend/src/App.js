@@ -47,7 +47,7 @@ const App = () => {
   // Handle the confirmation of the payment
   const onConfirm = async () => {
     if (!stripe || !elements || !clientSecret) return; // Ensure Stripe.js and elements are loaded
-
+    console.log("onConfirm called")
     const { error } = await stripe.confirmPayment({
       elements,
       clientSecret,
