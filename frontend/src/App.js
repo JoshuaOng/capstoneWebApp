@@ -28,29 +28,6 @@ const App = () => {
         }
       });
 
-            // Listen to the paymentmethod event
-      pr.on('paymentmethod', async (ev) => {
-        console.log('Payment method received:', ev.paymentMethod);
-
-        // Confirm the payment with your backend
-        const { error } = await stripe.confirmCardPayment(
-          clientSecret, {
-          payment_method: ev.paymentMethod.id,
-        }
-        );
-
-        if (error) {
-          console.error('Payment confirmation error:', error);
-          ev.complete('fail'); // Notify the UI that the payment failed
-        } else {
-
-          console.log('Payment successful!');
-          ev.complete('success'); // Notify the UI that the payment succeeded
-          // Optionally redirect or show success message
-        }
-      }
-      );
-
       // Request clientSecret from your backend server for PaymentIntent
       fetch('https://basic-app-api.azurewebsites.net/api/payment/create-payment-intent', {
         method: 'POST',
@@ -66,6 +43,29 @@ const App = () => {
         .catch((error) => console.error('Error fetching clientSecret:', error));
     }
   }, [stripe]);
+
+  // Listen to the paymentmethod event
+  pr.on('paymentmethod', async (ev) => {
+    console.log('Payment method received:', ev.paymentMethod);
+
+    // Confirm the payment with your backend
+    const { error } = await stripe.confirmCardPayment(
+      clientSecret, {
+      payment_method: ev.paymentMethod.id,
+    }
+    );
+
+    if (error) {
+      console.error('Payment confirmation error:', error);
+      ev.complete('fail'); // Notify the UI that the payment failed
+    } else {
+
+      console.log('Payment successful!');
+      ev.complete('success'); // Notify the UI that the payment succeeded
+      // Optionally redirect or show success message
+    }
+  }
+  );
 
   // Handle the confirmation of the payment
   const onConfirm = async () => {
