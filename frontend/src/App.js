@@ -1,27 +1,80 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { useStripe, useElements, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 
-function App() {
-  const [message, setMessage] = useState('');
+const App = () => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [paymentRequest, setPaymentRequest] = useState(null);
+  const [clientSecret, setClientSecret] = useState('');
 
+  // Create the PaymentRequest when stripe is available
   useEffect(() => {
-    axios.get('https://basicapp-backend001.azurewebsites.net/api/message')
-      .then(response => {
-        setMessage(response.data.message);
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
+    if (stripe) {
+      const pr = stripe.paymentRequest({
+        country: 'SG',
+        currency: 'sgd',
+        total: {
+          label: 'Demo total',
+          amount: 1099, // Amount in cents
+        },
+        requestPayerName: true,
+        requestPayerEmail: true,
       });
-  }, []);
 
+      // Check if the device can make payments
+      pr.canMakePayment().then((result) => {
+        if (result) {
+          setPaymentRequest(pr);
+        }
+      });
+
+      // Request clientSecret from your backend server for PaymentIntent
+      fetch('https://basic-app-api.azurewebsites.net/api/payment/create-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: 1099, // Match the amount and currency used in the PaymentRequest
+          currency: 'sgd',
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => setClientSecret(data.clientSecret))
+        .catch((error) => console.error('Error fetching clientSecret:', error));
+    }
+  }, [stripe]);
+
+  // Handle the confirmation of the payment
+  const onConfirm = async () => {
+    if (!stripe || !elements || !clientSecret) return; // Ensure Stripe.js and elements are loaded
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      clientSecret,
+      confirmParams: {
+        return_url: 'https://capstonewebapp.azurewebsites.net/order/123/complete', // URL to redirect to after successful payment
+      },
+    });
+
+    if (error) {
+      // Handle payment confirmation error
+      console.error('Payment confirmation error:', error);
+    } else {
+      console.log('Payment confirmed!');
+      // Redirect the user to the return_url or show a success message
+    }
+  };
+
+  // If PaymentRequestButton is available, render it
+  if (paymentRequest) {
+    return <PaymentRequestButtonElement options={{ paymentRequest }} />;
+  }
+
+  // Fallback to a traditional button if the PaymentRequestButton isn't available
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>{message}</p>
-      </header>
+    <div id="checkout-page">
+      <button onClick={onConfirm}>Confirm Payment</button>
     </div>
   );
-}
+};
 
 export default App;
