@@ -15,7 +15,7 @@ const App = () => {
         currency: 'sgd',
         total: {
           label: 'Demo total',
-          amount: 50, // Amount in cents
+          amount: 1000, // Amount in cents
         },
         requestPayerName: false,
         requestPayerEmail: false,
