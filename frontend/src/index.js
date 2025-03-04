@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import {loadStripe} from "@stripe/stripe-js";
 import Menu from './pages/menu';
 
 
