@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useStripe, useElements, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
+import Header from '../components/Header';
 
 const App = () => {
   const stripe = useStripe();
@@ -95,7 +96,8 @@ const App = () => {
   // Fallback to a traditional button if the PaymentRequestButton isn't available
   return (
     <div id="checkout-page">
-      <button onClick={onConfirm}>Confirm Payment</button>
+        <Header />
+        <button onClick={onConfirm}>Confirm Payment</button>
     </div>
   );
 };
