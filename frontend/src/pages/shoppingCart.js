@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { CartContext } from '../context/cartContext';
 import '../styles/shoppingCart.css';
 import Header from '../components/Header'
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const ShoppingCart = () => {
     const { cart, removeFromCart, updateQuantity } = useContext(CartContext);

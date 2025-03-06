@@ -2,6 +2,8 @@ import React from 'react';
 import Header from '../components/Header';
 import MenuItem from '../components/menuItem';
 import '../styles/home.css';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const menuData = [
     { id: 1, name: "Margherita Pizza", description: "Classic cheese pizza with fresh basil.", price: 12.99, image: "https://source.unsplash.com/250x150/?pizza" },

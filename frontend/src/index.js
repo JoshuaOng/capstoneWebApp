@@ -5,6 +5,8 @@ import AppRouter from './routes/Router';
 import { Elements } from '@stripe/react-stripe-js';
 import {loadStripe} from "@stripe/stripe-js";
 import { CartProvider } from './context/cartContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const stripePromise = loadStripe('pk_test_51QJnma08yS02cjemXBk87PGWFRhH3FCrKMMKJTjJ1ORJgCYuZDV3U3iqxdwCkgcLN7COrU8e03UE4LBVudCNEJp60061IzFEVO');
@@ -15,6 +17,7 @@ root.render(
     <Elements stripe={stripePromise}>
       <CartProvider>
         <AppRouter />
+        <ToastContainer />
       </CartProvider>
     </Elements>
   </React.StrictMode>
