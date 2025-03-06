@@ -21,6 +21,7 @@ export const CartProvider = ({ children }) => {
         setCart((prevCart) => {
             const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
             if (existingItem) {
+                toast.success(`${item.name} added to cart!`, { position: "top-right", autoClose: 2000 });
                 return prevCart.map((cartItem) =>
                     cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem
                 );
