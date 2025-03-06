@@ -90,7 +90,13 @@ const Checkout = () => {
       }
     }
     );
-    return <PaymentRequestButtonElement options={{ paymentRequest }} />;
+    return (
+        <div>
+            <Header />
+            <p>Checkout</p>
+            <PaymentRequestButtonElement options={{ paymentRequest }} />
+        </div>
+    )
   }
 
   // Fallback to a traditional button if the PaymentRequestButton isn't available
