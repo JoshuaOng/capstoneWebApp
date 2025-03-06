@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useStripe, useElements, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import Header from '../components/Header';
 
-const App = () => {
+const Checkout = () => {
   const stripe = useStripe();
   const elements = useElements();
   const [paymentRequest, setPaymentRequest] = useState(null);
@@ -97,9 +97,10 @@ const App = () => {
   return (
     <div id="checkout-page">
         <Header />
+        <p>test</p>
         <button onClick={onConfirm}>Confirm Payment</button>
     </div>
   );
 };
 
-export default App;
+export default Checkout;
