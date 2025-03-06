@@ -11,7 +11,7 @@ const MenuItem = ({ id, name, description, price, image }) => {
                 <h3 style={styles.title}>{name}</h3>
                 <p style={styles.description}>{description}</p>
                 <p style={styles.price}>${price.toFixed(2)}</p>
-                <button onClick={() => addToCart({ id, name, price })}>Add to Cart</button>
+                <button onClick={() => addToCart({ id, name, price, image })}>Add to Cart</button>
             </div>
         </div>
     );

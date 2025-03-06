@@ -2,6 +2,8 @@
 .home-container {
     padding: 20px;
     text-align: center;
+    max-width: 1200px;  /* Limit the container width */
+    margin: 0 auto;  /* Center the container horizontally */
 }
 
 /* Grid layout for menu items */
@@ -9,6 +11,14 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
-    justify-content: center;
+    justify-items: center;  /* Ensures items are centered in each grid cell */
     margin-top: 20px;
+}
+
+/* ✅ Mobile-Friendly Styles */
+@media (max-width: 768px) {
+    .menu-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+    }
 }

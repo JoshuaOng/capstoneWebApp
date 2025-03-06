@@ -6,10 +6,10 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const menuData = [
-    { id: 1, name: "Margherita Pizza", description: "Classic cheese pizza with fresh basil.", price: 12.99, image: "https://source.unsplash.com/250x150/?pizza" },
-    { id: 2, name: "Cheeseburger", description: "Juicy beef patty with cheese, lettuce & tomato.", price: 10.99, image: "https://source.unsplash.com/250x150/?burger" },
-    { id: 3, name: "Pasta Carbonara", description: "Creamy sauce with bacon and parmesan.", price: 14.99, image: "https://source.unsplash.com/250x150/?pasta" },
-    { id: 4, name: "Caesar Salad", description: "Crisp romaine, parmesan, and croutons.", price: 8.99, image: "https://source.unsplash.com/250x150/?salad" },
+    { id: 1, name: "Margherita Pizza", description: "Classic cheese pizza with fresh basil.", price: 12.99, image: "/images/pizza.png" },
+    { id: 2, name: "Cheeseburger", description: "Juicy beef patty with cheese, lettuce & tomato.", price: 10.99, image: "/images/burger.png" },
+    { id: 3, name: "Pasta Carbonara", description: "Creamy sauce with bacon and parmesan.", price: 14.99, image: "/images/pasta.png" },
+    { id: 4, name: "Caesar Salad", description: "Crisp romaine, parmesan, and croutons.", price: 8.99, image: "/images/salad.png" },
 ];
 
 const Home = () => {

@@ -50,6 +50,12 @@
     color: #666;
 }
 
+.cart-item img {
+    width: 50%; /* Make image take full width of the container */
+    height: 50%; /* Set fixed height */
+    object-fit: contain;
+}
+
 .cart-controls {
     display: flex;
     justify-content: center;
@@ -66,18 +72,34 @@
     border-radius: 5px;
 }
 
-.cart-controls button {
-    background: #ff5733;
+/* Update and Remove Buttons */
+.cart-controls button.update-btn,
+.cart-controls button.remove-btn {
     color: #fff;
     border: none;
     padding: 8px 12px;
     cursor: pointer;
     border-radius: 5px;
     transition: background 0.3s;
+    width: auto; /* Allow button to be its natural size */
+    min-width: 120px; /* Set a minimum width */
+    text-align: center; /* Center text within the button */
 }
 
-.cart-controls button:hover {
-    background: #d94324;
+.cart-controls button.update-btn {
+    background: #ff9800; /* Orange color for update */
+}
+
+.cart-controls button.update-btn:hover {
+    background: #f57c00; /* Darker orange on hover */
+}
+
+.cart-controls button.remove-btn {
+    background: #dc3545; /* Red color for remove */
+}
+
+.cart-controls button.remove-btn:hover {
+    background: #c82333; /* Darker red on hover */
 }
 
 .empty-cart {
@@ -85,4 +107,53 @@
     font-size: 18px;
     color: #555;
     margin-top: 20px;
+}
+
+/* Checkout Button Section */
+.checkout-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 30px auto;
+    transition: background-color 0.3s ease;
+}
+
+.checkout-btn:hover {
+    background-color: #218838;
+}
+
+/* ✅ Mobile-Friendly Styles */
+@media (max-width: 768px) {
+    .shopping-cart-container {
+        padding: 15px;
+    }
+
+    .cart-items {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+    }
+
+    .cart-item img {
+        height: 120px;
+    }
+
+    .cart-controls {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .cart-controls input {
+        width: 40px;
+    }
+
+    .checkout-btn {
+        width: 100%;
+        padding: 12px 20px;
+    }
 }
