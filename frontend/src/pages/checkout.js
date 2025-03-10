@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useStripe, useElements, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import Header from '../components/Header';
 import { useLocation } from 'react-router-dom';
+import '../styles/checkout.css';
 
 const Checkout = () => {
   const location = useLocation();
