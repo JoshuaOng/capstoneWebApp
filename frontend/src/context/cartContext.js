@@ -11,9 +11,21 @@ export const CartProvider = ({ children }) => {
         return savedCart ? JSON.parse(savedCart) : [];
     });
 
-    // Save cart to localStorage
+    const [totalBill, setTotalBill] = useState(() => {
+        return parseFloat(localStorage.getItem("totalBill")) || 0;
+    });
+
+    // Function to calculate total bill
+    const calculateTotal = (cartItems) => {
+        return cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+    };
+
+    // Update localStorage and total bill whenever cart changes
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(cart));
+        const newTotal = calculateTotal(cart);
+        setTotalBill(newTotal);
+        localStorage.setItem("totalBill", newTotal);
     }, [cart]);
 
     // Add item to cart
@@ -25,8 +37,7 @@ export const CartProvider = ({ children }) => {
                 return prevCart.map((cartItem) =>
                     cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem
                 );
-            }
-            else{
+            } else {
                 toast.success(`${item.name} added to cart!`, { position: "top-right", autoClose: 2000 });
                 return [...prevCart, { ...item, quantity: 1 }];
             }
@@ -51,7 +62,7 @@ export const CartProvider = ({ children }) => {
     };
 
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity }}>
+        <CartContext.Provider value={{ cart, totalBill, addToCart, removeFromCart, updateQuantity, calculateTotal }}>
             {children}
         </CartContext.Provider>
     );

@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useStripe, useElements, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import Header from '../components/Header';
-import { useLocation } from 'react-router-dom';
+import { CartContext } from '../context/cartContext';
 import '../styles/checkout.css';
 
 const Checkout = () => {
-  const location = useLocation();
   const stripe = useStripe();
   const elements = useElements();
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [clientSecret, setClientSecret] = useState('');
+  const { cart, calculateTotal } = useContext(CartContext);
 
-  const cartItems = location.state?.cart || []; // Get cart items from location state
-  const totalBill = location.state?.totalBill || 0; // Get totalBill or default to 0
+  // Load cart from localStorage if needed
+  const storedCart = JSON.parse(localStorage.getItem('cart')) || cart;
+  const totalBill = calculateTotal(storedCart);
 
   // GST & Service Charge
   const gst = (totalBill * 0.09).toFixed(2); // 9% GST
@@ -102,13 +103,14 @@ const Checkout = () => {
     }
     );
     return (
+
         // <div>
         //     <Header />
         //     <p>Checkout</p>
         //     <p>Total Cost: ${totalBill}</p>
         //     <PaymentRequestButtonElement options={{ paymentRequest }} />
         // </div>
-        <div className="checkout-container">
+      <div className="checkout-container">
         <Header />
         <h1 className="checkout-title">Order Summary</h1>
   
@@ -116,8 +118,8 @@ const Checkout = () => {
         <div className="receipt">
           <h2>Receipt</h2>
           <div className="receipt-items">
-            {cartItems.length > 0 ? (
-              cartItems.map((item) => (
+            {storedCart.length > 0 ? (
+              storedCart.map((item) => (
                 <div key={item.id} className="receipt-item">
                   <span>{item.name} x {item.quantity}</span>
                   <span>${(item.price * item.quantity).toFixed(2)}</span>
@@ -149,12 +151,43 @@ const Checkout = () => {
 
   // Fallback to a traditional button if the PaymentRequestButton isn't available
   return (
-    <div id="checkout-page">
+    // <div id="checkout-page">
+    //     <Header />
+    //     <p>Checkout</p>
+    //     <p>Total Cost: ${totalBill}</p>
+    //     <button onClick={onConfirm}>Confirm Payment</button>
+    // </div>
+    <div className="checkout-container">
         <Header />
-        <p>Checkout</p>
-        <p>Total Cost: ${totalBill}</p>
-        <button onClick={onConfirm}>Confirm Payment</button>
-    </div>
+        <h1 className="checkout-title">Order Summary</h1>
+  
+        {/* Receipt Summary */}
+        <div className="receipt-summary">
+            <div className="receipt-summary-item">
+                <span>Subtotal:</span>
+                <span>${parseFloat(totalBill).toFixed(2)}</span>
+            </div>
+            <div className="receipt-summary-item">
+                <span>GST (9%):</span>
+                <span>${parseFloat(gst).toFixed(2)}</span>
+            </div>
+            <div className="receipt-summary-item">
+                <span>Service Charge (10%):</span>
+                <span>${parseFloat(serviceCharge).toFixed(2)}</span>
+            </div>
+            <div className="receipt-grand-total">
+                <span>Total:</span>
+                <span>${grandTotal}</span>
+            </div>
+        </div>
+  
+        {/* Payment Button */}
+        {paymentRequest ? (
+          <PaymentRequestButtonElement options={{ paymentRequest }} />
+        ) : (
+          <button className="confirm-payment-btn" onClick={onConfirm}>Confirm Payment</button>
+        )}
+      </div>
   );
 };
 

@@ -21,6 +21,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Styling for Receipt Items */
 .receipt h2 {
     font-size: 20px;
     margin-bottom: 10px;
@@ -38,17 +39,31 @@
     font-size: 16px;
 }
 
-.receipt-total {
-    margin-top: 15px;
+/* Ensure alignment of labels & values */
+.receipt-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.receipt-summary-item {
+    display: flex;
+    justify-content: space-between;
     font-size: 18px;
-}
-
-.receipt-grand-total {
-    font-size: 20px;
     font-weight: bold;
-    margin-top: 10px;
 }
 
+/* Grand total styling */
+.receipt-grand-total {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 2px solid #000;
+}
+
+/* Confirm Payment Button */
 .confirm-payment-btn {
     background-color: #28a745;
     color: white;
@@ -60,6 +75,7 @@
     cursor: pointer;
     margin-top: 20px;
     transition: background-color 0.3s ease;
+    width: 100%;
 }
 
 .confirm-payment-btn:hover {
