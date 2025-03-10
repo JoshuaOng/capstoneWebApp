@@ -9,8 +9,14 @@ const Checkout = () => {
   const elements = useElements();
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [clientSecret, setClientSecret] = useState('');
+
+  const cartItems = location.state?.cart || []; // Get cart items from location state
   const totalBill = location.state?.totalBill || 0; // Get totalBill or default to 0
 
+  // GST & Service Charge
+  const gst = (totalBill * 0.09).toFixed(2); // 9% GST
+  const serviceCharge = (totalBill * 0.10).toFixed(2); // 10% Service Charge
+  const grandTotal = (parseFloat(totalBill) + parseFloat(gst) + parseFloat(serviceCharge)).toFixed(2);
 
   // Create the PaymentRequest when stripe is available
   useEffect(() => {
@@ -20,7 +26,7 @@ const Checkout = () => {
         currency: 'sgd',
         total: {
           label: 'Demo total',
-          amount: Math.round(totalBill * 100), // Convert to cents
+          amount: Math.round(grandTotal * 100), // Convert to cents
         },
         requestPayerName: false,
         requestPayerEmail: false,
@@ -38,7 +44,7 @@ const Checkout = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          amount: Math.round(totalBill * 100), // Convert to cents
+          amount: Math.round(grandTotal * 100), // Convert to cents
           currency: 'sgd',
         }),
       })
@@ -95,11 +101,48 @@ const Checkout = () => {
     }
     );
     return (
-        <div>
-            <Header />
-            <p>Checkout</p>
-            <PaymentRequestButtonElement options={{ paymentRequest }} />
+        // <div>
+        //     <Header />
+        //     <p>Checkout</p>
+        //     <p>Total Cost: ${totalBill}</p>
+        //     <PaymentRequestButtonElement options={{ paymentRequest }} />
+        // </div>
+        <div className="checkout-container">
+        <Header />
+        <h1 className="checkout-title">Order Summary</h1>
+  
+        {/* Receipt Section */}
+        <div className="receipt">
+          <h2>Receipt</h2>
+          <div className="receipt-items">
+            {cartItems.length > 0 ? (
+              cartItems.map((item) => (
+                <div key={item.id} className="receipt-item">
+                  <span>{item.name} x {item.quantity}</span>
+                  <span>${(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+              ))
+            ) : (
+              <p>No items in cart</p>
+            )}
+          </div>
+          <hr />
+          <div className="receipt-total">
+            <div><strong>Subtotal:</strong> <span>${totalBill}</span></div>
+            <div><strong>GST (9%):</strong> <span>${gst}</span></div>
+            <div><strong>Service Charge (10%):</strong> <span>${serviceCharge}</span></div>
+            <hr />
+            <div className="receipt-grand-total"><strong>Grand Total:</strong> <span>${grandTotal}</span></div>
+          </div>
         </div>
+  
+        {/* Payment Button */}
+        {paymentRequest ? (
+          <PaymentRequestButtonElement options={{ paymentRequest }} />
+        ) : (
+          <button className="confirm-payment-btn" onClick={onConfirm}>Confirm Payment</button>
+        )}
+      </div>
     )
   }
 
@@ -107,6 +150,7 @@ const Checkout = () => {
   return (
     <div id="checkout-page">
         <Header />
+        <p>Checkout</p>
         <p>Total Cost: ${totalBill}</p>
         <button onClick={onConfirm}>Confirm Payment</button>
     </div>
