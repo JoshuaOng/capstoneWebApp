@@ -43,8 +43,10 @@ const ShoppingCart = () => {
             return;
         }
         toast.success("Proceeding to checkout!", { position: "top-right", autoClose: 2000 });
-        navigate('/checkout'); // Redirect to checkout page
+
+        navigate('/checkout', { state: { totalBill } }); // Pass totalBill as state
     };
+
 
     return (
         <div>

@@ -29,7 +29,7 @@ const styles = {
     },
     image: {
         width: '100%',
-        height: '150px',
+        height: '250px',
         objectFit: 'cover',
         borderRadius: '8px'
     },

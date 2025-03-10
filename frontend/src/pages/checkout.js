@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useStripe, useElements, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import Header from '../components/Header';
+import { useLocation } from 'react-router-dom';
 
 const Checkout = () => {
+  const location = useLocation();
   const stripe = useStripe();
   const elements = useElements();
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [clientSecret, setClientSecret] = useState('');
+  const totalBill = location.state?.totalBill || 0; // Get totalBill or default to 0
+
 
   // Create the PaymentRequest when stripe is available
   useEffect(() => {
@@ -16,7 +20,7 @@ const Checkout = () => {
         currency: 'sgd',
         total: {
           label: 'Demo total',
-          amount: 1000, // Amount in cents
+          amount: Math.round(totalBill * 100), // Convert to cents
         },
         requestPayerName: false,
         requestPayerEmail: false,
@@ -34,7 +38,7 @@ const Checkout = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          amount: 1000, // Match the amount and currency used in the PaymentRequest
+          amount: Math.round(totalBill * 100), // Convert to cents
           currency: 'sgd',
         }),
       })
@@ -103,7 +107,7 @@ const Checkout = () => {
   return (
     <div id="checkout-page">
         <Header />
-        <p>test</p>
+        <p>Total Cost: ${totalBill}</p>
         <button onClick={onConfirm}>Confirm Payment</button>
     </div>
   );

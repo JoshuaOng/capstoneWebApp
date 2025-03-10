@@ -51,8 +51,8 @@
 }
 
 .cart-item img {
-    width: 50%; /* Make image take full width of the container */
-    height: 50%; /* Set fixed height */
+    width: 100%; /* Make image take full width of the container */
+    height: 200px; /* Set fixed height */
     object-fit: contain;
 }
 
