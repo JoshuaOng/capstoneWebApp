@@ -47,7 +47,7 @@ const Checkout = () => {
         .then(console.log("successfully fetched secret"))
         .catch((error) => console.error('Error fetching clientSecret:', error));
     }
-  }, [stripe]);
+  }, [stripe, totalBill]);
 
   // Handle the confirmation of the payment
   const onConfirm = async () => {
