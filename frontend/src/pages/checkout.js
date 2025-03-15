@@ -102,6 +102,8 @@ const Checkout = () => {
         console.log('Payment successful!');
         ev.complete('success'); // Notify the UI that the payment succeeded
         // Optionally redirect or show success message
+        navigate('/payment-success');
+
       }
     }
     );
