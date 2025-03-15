@@ -123,12 +123,24 @@ const Checkout = () => {
             )}
           </div>
           <hr />
-          <div className="receipt-total">
-            <div><strong>Subtotal:</strong> <span>${totalBill}</span></div>
-            <div><strong>GST (9%):</strong> <span>${gst}</span></div>
-            <div><strong>Service Charge (10%):</strong> <span>${serviceCharge}</span></div>
-            <hr />
-            <div className="receipt-grand-total"><strong>Grand Total:</strong> <span>${grandTotal}</span></div>
+          {/* Receipt Summary */}
+          <div className="receipt-summary">
+              <div className="receipt-summary-item">
+                  <span>Subtotal:</span>
+                  <span>${parseFloat(totalBill).toFixed(2)}</span>
+              </div>
+              <div className="receipt-summary-item">
+                  <span>GST (9%):</span>
+                  <span>${parseFloat(gst).toFixed(2)}</span>
+              </div>
+              <div className="receipt-summary-item">
+                  <span>Service Charge (10%):</span>
+                  <span>${parseFloat(serviceCharge).toFixed(2)}</span>
+              </div>
+              <div className="receipt-grand-total">
+                  <span>Total:</span>
+                  <span>${grandTotal}</span>
+              </div>
           </div>
         </div>
   
