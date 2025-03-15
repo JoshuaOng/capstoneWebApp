@@ -67,7 +67,7 @@ const Checkout = () => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: 'https://capstonewebapp.azurewebsites.net/order/123/complete', // URL to redirect to after successful payment
+        return_url: 'https://delightful-moss-0e300e100.6.azurestaticapps.net/payment-success', // URL to redirect to after successful payment
       },
     });
 
