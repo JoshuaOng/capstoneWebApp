@@ -3,6 +3,7 @@ import { useStripe, useElements, PaymentRequestButtonElement } from '@stripe/rea
 import Header from '../components/Header';
 import { CartContext } from '../context/cartContext';
 import '../styles/checkout.css';
+import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
   const stripe = useStripe();
@@ -10,6 +11,7 @@ const Checkout = () => {
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [clientSecret, setClientSecret] = useState('');
   const { cart, calculateTotal } = useContext(CartContext);
+  const navigate = useNavigate();
 
   // Load cart from localStorage if needed
   const storedCart = JSON.parse(localStorage.getItem('cart')) || cart;
@@ -74,6 +76,7 @@ const Checkout = () => {
       console.error('Payment confirmation error:', error);
     } else {
       console.log('Payment confirmed!');
+      navigate('/payment-success');
       // Redirect the user to the return_url or show a success message
     }
   };
