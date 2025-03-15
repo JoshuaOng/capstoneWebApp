@@ -1,0 +1,75 @@
+.menu-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    text-align: center;
+    transition: 0.3s;
+    cursor: pointer;
+    max-width: 250px;
+}
+
+.menu-card:hover {
+    transform: translateY(-5px);
+}
+
+.menu-image {
+    width: 100%; /* Ensure image fits container */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 180px; /* Adjust as needed */
+    object-fit: contain; /* Prevent cropping */
+    display: block;
+    margin: 0 auto; /* Center the image */
+}
+
+.menu-content {
+    margin-top: 10px;
+}
+
+.menu-title {
+    margin: 10px 0 5px;
+    font-size: 18px;
+}
+
+.menu-description {
+    font-size: 14px;
+    color: #666;
+}
+
+.menu-price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #27ae60;
+}
+
+.menu-button {
+    background: #27ae60;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+}
+
+.menu-button:hover {
+    background: #218c53;
+}
+
+@media (max-width: 768px) {
+    .card {
+        max-width: 100%; /* Makes it full width on small screens */
+    }
+    
+    button {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+    
+    button svg {
+        width: 16px;
+        height: 16px;
+    }
+}

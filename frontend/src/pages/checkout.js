@@ -103,13 +103,6 @@ const Checkout = () => {
     }
     );
     return (
-
-        // <div>
-        //     <Header />
-        //     <p>Checkout</p>
-        //     <p>Total Cost: ${totalBill}</p>
-        //     <PaymentRequestButtonElement options={{ paymentRequest }} />
-        // </div>
       <div className="checkout-container">
         <Header />
         <h1 className="checkout-title">Order Summary</h1>

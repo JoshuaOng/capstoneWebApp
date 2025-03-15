@@ -61,16 +61,22 @@ const ShoppingCart = () => {
                             <div key={item.id} className="cart-item">
                                 <img src={item.image} alt={item.name} />
                                 <h3>{item.name}</h3>
-                                <p>${item.price.toFixed(2)} x {item.quantity}</p>
+                                <p>${item.price.toFixed(2)}</p>
                                 <div className="cart-controls">
-                                    <input
-                                        type="number"
-                                        value={quantityInput[item.id] || item.quantity} // Controlled input value
-                                        min="1"
-                                        onChange={(e) => handleQuantityChange(item.id, e.target.value)} // Update state on input change
-                                    />
-                                    <button className="update-btn" onClick={() => handleUpdateQuantity(item.id)}>Update</button>
-                                    <button className="remove-btn"onClick={() => removeFromCart(item.id)}>Remove item</button>
+                                    <div className='top-control-div'>
+                                        <div>Quantity: {item.quantity}</div>
+                                        <div>Price: ${(item.price * item.quantity).toFixed(2)}</div>
+                                        <input
+                                            type="number"
+                                            value={quantityInput[item.id] || item.quantity} // Controlled input value
+                                            min="1"
+                                            onChange={(e) => handleQuantityChange(item.id, e.target.value)} // Update state on input change
+                                        />
+                                    </div>
+                                    <div className='btm-control-div'>
+                                        <button className="update-btn" onClick={() => handleUpdateQuantity(item.id)}>Update</button>
+                                        <button className="remove-btn"onClick={() => removeFromCart(item.id)}>Remove item</button>
+                                    </div>
                                 </div>
                             </div>
                         ))}
