@@ -10,9 +10,8 @@ const Checkout = () => {
   const elements = useElements();
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [clientSecret, setClientSecret] = useState('');
-  const { cart, calculateTotal } = useContext(CartContext);
+  const { cart, calculateTotal, clearCart } = useContext(CartContext);
   const navigate = useNavigate();
-
   // Load cart from localStorage if needed
   const storedCart = JSON.parse(localStorage.getItem('cart')) || cart;
   const totalBill = calculateTotal(storedCart);
@@ -109,7 +108,7 @@ const Checkout = () => {
       console.error('Payment confirmation error:', error);
     } else {
       console.log('Payment confirmed1!');
-      CartContext.clearCart();
+      clearCart();
       // After the payment is confirmed, send the order to Azure
       await sendOrderDataToAzure();
 
