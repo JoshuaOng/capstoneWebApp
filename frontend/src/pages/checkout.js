@@ -109,7 +109,12 @@ const Checkout = () => {
       console.error('Payment confirmation error:', error);
     } else {
       console.log('Payment confirmed!');
+      CartContext.clearCart();
+      // After the payment is confirmed, send the order to Azure
+      await sendOrderDataToAzure();
 
+      // Optionally redirect or show success message
+      navigate('/payment-success');
       // Redirect the user to the return_url or show a success message
     }
   };
