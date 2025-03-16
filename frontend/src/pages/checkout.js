@@ -59,6 +59,38 @@ const Checkout = () => {
     }
   }, [stripe, grandTotal]);
 
+  // Send order data to Azure function before confirming payment
+  const sendOrderDataToAzure = async () => {
+    try {
+      const orderData = {
+        orderID: Date.now().toString(), // Example: use current timestamp as orderID
+        tableNumber: 5, // Example: hardcoded, you can get this dynamically if needed
+        datetimeOrdered: new Date().toISOString(),
+        totalAmount: grandTotal,
+        orders: storedCart.map(item => ({
+          foodItem: item.name,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+      };
+
+      const response = await fetch('https://producer-function.azurewebsites.net/api/produceOrder?code=negHRZZbS1q8dBQVOAlB3myfmqGBSlSe47aDzTHlnFU0AzFu6aE0EA%3D%3D', { // Replace with your Azure function URL
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log('Order successfully sent to Azure:', data);
+      } else {
+        throw new Error(data.message || 'Failed to send order');
+      }
+    } catch (error) {
+      console.error('Error sending order to Azure:', error);
+    }
+  };  
+
   // Handle the confirmation of the payment
   const onConfirm = async () => {
     if (!stripe || !elements || !clientSecret) return; // Ensure Stripe.js and elements are loaded
@@ -77,6 +109,7 @@ const Checkout = () => {
     } else {
       console.log('Payment confirmed!');
       navigate('/payment-success');
+      await sendOrderDataToAzure();
       // Redirect the user to the return_url or show a success message
     }
   };
@@ -103,6 +136,9 @@ const Checkout = () => {
         ev.complete('success'); // Notify the UI that the payment succeeded
         // Optionally redirect or show success message
         navigate('/payment-success');
+        CartContext.clearCart();
+        // After the payment is confirmed, send the order to Azure
+        await sendOrderDataToAzure();
 
       }
     }

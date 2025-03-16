@@ -61,8 +61,15 @@ export const CartProvider = ({ children }) => {
         );
     };
 
+    // Function to clear cart
+    const clearCart = () => {
+        setCart([]); // Reset cart state
+        localStorage.removeItem("cart"); // Clear from local storage
+        localStorage.removeItem("totalBill"); // Clear total bill
+    };
+
     return (
-        <CartContext.Provider value={{ cart, totalBill, addToCart, removeFromCart, updateQuantity, calculateTotal }}>
+        <CartContext.Provider value={{ cart, totalBill, addToCart, removeFromCart, updateQuantity, calculateTotal, clearCart }}>
             {children}
         </CartContext.Provider>
     );
