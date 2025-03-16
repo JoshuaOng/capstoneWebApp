@@ -61,6 +61,7 @@ const Checkout = () => {
 
   // Send order data to Azure function before confirming payment
   const sendOrderDataToAzure = async () => {
+    console.log("sendOrderDataToAzure called");
     try {
       const orderData = {
         orderID: Date.now().toString(), // Example: use current timestamp as orderID
@@ -108,8 +109,7 @@ const Checkout = () => {
       console.error('Payment confirmation error:', error);
     } else {
       console.log('Payment confirmed!');
-      navigate('/payment-success');
-      await sendOrderDataToAzure();
+
       // Redirect the user to the return_url or show a success message
     }
   };
@@ -134,12 +134,13 @@ const Checkout = () => {
 
         console.log('Payment successful!');
         ev.complete('success'); // Notify the UI that the payment succeeded
-        // Optionally redirect or show success message
-        navigate('/payment-success');
+
         CartContext.clearCart();
         // After the payment is confirmed, send the order to Azure
         await sendOrderDataToAzure();
 
+        // Optionally redirect or show success message
+        navigate('/payment-success');
       }
     }
     );
