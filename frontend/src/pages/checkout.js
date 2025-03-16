@@ -139,7 +139,7 @@ const Checkout = () => {
         // After the payment is confirmed, send the order to Azure
         await sendOrderDataToAzure();
 
-        CartContext.clearCart();
+        clearCart();
 
         // Optionally redirect or show success message
         navigate('/payment-success');
