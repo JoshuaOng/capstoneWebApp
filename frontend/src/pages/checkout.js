@@ -136,14 +136,16 @@ const Checkout = () => {
         console.error('Payment confirmation error:', error);
         ev.complete('fail'); // Notify the UI that the payment failed
       } else {
-        // Optionally redirect or show success message
-        navigate('/payment-success');
-        console.log('Payment successful!2');
-        ev.complete('success'); // Notify the UI that the payment succeeded
-
-        CartContext.clearCart();
         // After the payment is confirmed, send the order to Azure
         await sendOrderDataToAzure();
+
+        CartContext.clearCart();
+
+        // Optionally redirect or show success message
+        navigate('/payment-success');
+        
+        console.log('Payment successful!2');
+        ev.complete('success'); // Notify the UI that the payment succeeded
       }
     }
     );
