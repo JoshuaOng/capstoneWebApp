@@ -9,7 +9,7 @@ const Header = () => {
 
     return (
         <nav className="header">
-            <h1>My Website</h1>
+            <h1>The Best of The West</h1>
             <ul className="nav-links">
                 <li><Link to="/home">Home</Link></li>
                 <li><Link to="/checkout">Checkout</Link></li>
