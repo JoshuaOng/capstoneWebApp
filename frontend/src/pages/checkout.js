@@ -126,6 +126,7 @@ const Checkout = () => {
   if (paymentRequest) {
     // Listen to the paymentmethod event
     paymentRequest.on('paymentmethod', async (ev) => {
+      if (isProcessing) return; // Prevent duplicate payments
       console.log('Payment method received:', ev.paymentMethod);
       setIsProcessing(true);
 
