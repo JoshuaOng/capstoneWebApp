@@ -55,8 +55,8 @@ const Checkout = () => {
       })
         .then((res) => res.json())
         .then((data) => setClientSecret(data.clientSecret))
+        .then((data) => console.log(data.clientSecret))
         .then(console.log("successfully fetched secret"))
-        .then(console.log(clientSecret))
         .catch((error) => console.error('Error fetching clientSecret:', error));
     }
   }, [stripe, grandTotal]);
