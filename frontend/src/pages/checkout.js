@@ -11,6 +11,8 @@ const Checkout = () => {
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [clientSecret, setClientSecret] = useState('');
   const { cart, calculateTotal, clearCart } = useContext(CartContext);
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const navigate = useNavigate();
   // Load cart from localStorage if needed
   const storedCart = JSON.parse(localStorage.getItem('cart')) || cart;
@@ -63,14 +65,14 @@ const Checkout = () => {
     console.log("sendOrderDataToAzure called");
     try {
       const orderData = {
-        orderID: Date.now().toString(), // Example: use current timestamp as orderID
-        tableNumber: 5, // Example: hardcoded, you can get this dynamically if needed
-        datetimeOrdered: new Date().toISOString(),
-        totalAmount: grandTotal,
+        orderID: Date.now().toString(), // Use a timestamp as the unique order ID
+        tableNumber: 5, // Example: You can dynamically get this if needed
+        datetimeOrdered: new Date().toISOString(), // Ensure ISO format for the datetime
+        totalAmount: grandTotal, // Grand total calculated in the checkout page
         orders: storedCart.map(item => ({
-          foodItem: item.name,
-          quantity: item.quantity,
-          price: item.price,
+          foodItem: item.name, // Item name
+          quantity: item.quantity, // Quantity of each item
+          price: item.price, // Price of each item
         })),
       };
 
@@ -93,7 +95,8 @@ const Checkout = () => {
 
   // Handle the confirmation of the payment
   const onConfirm = async () => {
-    if (!stripe || !elements || !clientSecret) return; // Ensure Stripe.js and elements are loaded
+    if (!stripe || !elements || !clientSecret || isProcessing) return;
+    setIsProcessing(true); // Disable button to prevent multiple calls  
     console.log("onConfirm called")
     const { error } = await stripe.confirmPayment({
       elements,
@@ -102,6 +105,7 @@ const Checkout = () => {
         return_url: 'https://delightful-moss-0e300e100.6.azurestaticapps.net/payment-success', // URL to redirect to after successful payment
       },
     });
+    setIsProcessing(false); // Re-enable button after response
 
     if (error) {
       // Handle payment confirmation error
@@ -123,6 +127,7 @@ const Checkout = () => {
     // Listen to the paymentmethod event
     paymentRequest.on('paymentmethod', async (ev) => {
       console.log('Payment method received:', ev.paymentMethod);
+      setIsProcessing(true);
 
       // Confirm the payment with your backend
       const { error } = await stripe.confirmCardPayment(
@@ -130,6 +135,7 @@ const Checkout = () => {
         payment_method: ev.paymentMethod.id,
       }
       );
+      setIsProcessing(false); // Re-enable processing after response
 
       if (error) {
         console.error('Payment confirmation error:', error);
