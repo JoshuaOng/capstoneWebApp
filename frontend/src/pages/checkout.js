@@ -46,7 +46,7 @@ const Checkout = () => {
 
       // Request clientSecret from your backend server for PaymentIntent
       // fetch('https://basic-app-api.azurewebsites.net/api/payment/create-payment-intent', {
-      fetch('capstonewebapp-backendapi.azurewebsites.net/api/payment/create-payment-intent', {
+      fetch('https://capstonewebapp-backendapi.azurewebsites.net/api/payment/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
