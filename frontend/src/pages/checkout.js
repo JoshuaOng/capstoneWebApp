@@ -11,7 +11,6 @@ const Checkout = () => {
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [clientSecret, setClientSecret] = useState('');
   const { cart, calculateTotal, clearCart } = useContext(CartContext);
-  const [isProcessing, setIsProcessing] = useState(false);
 
   const navigate = useNavigate();
   // Load cart from localStorage if needed
@@ -45,8 +44,8 @@ const Checkout = () => {
       });
 
       // Request clientSecret from your backend server for PaymentIntent
-      // fetch('https://basic-app-api.azurewebsites.net/api/payment/create-payment-intent', {
-      fetch('https://capstonewebapp-backendapi.azurewebsites.net/api/payment/create-payment-intent', {
+      fetch('https://basic-app-api.azurewebsites.net/api/payment/create-payment-intent', {
+      // fetch('https://capstonewebapp-backendapi.azurewebsites.net/api/payment/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -96,8 +95,7 @@ const Checkout = () => {
 
   // Handle the confirmation of the payment
   const onConfirm = async () => {
-    if (!stripe || !elements || !clientSecret || isProcessing) return;
-    setIsProcessing(true); // Disable button to prevent multiple calls  
+    if (!stripe || !elements || !clientSecret) return;
     console.log("onConfirm called")
     console.log("clientSecret: ", clientSecret)
     const { error } = await stripe.confirmPayment({
@@ -107,7 +105,6 @@ const Checkout = () => {
         return_url: 'https://delightful-moss-0e300e100.6.azurestaticapps.net/payment-success', // URL to redirect to after successful payment
       },
     });
-    setIsProcessing(false); // Re-enable button after response
 
     if (error) {
       // Handle payment confirmation error
@@ -129,9 +126,7 @@ const Checkout = () => {
     // Listen to the paymentmethod event
     paymentRequest.on('paymentmethod', async (ev) => {
       console.log("clientSecret: ", clientSecret)
-      if (isProcessing) return; // Prevent duplicate payments
       console.log('Payment method received:', ev.paymentMethod);
-      setIsProcessing(true);
 
       // Confirm the payment with your backend
       const { error } = await stripe.confirmCardPayment(
@@ -139,7 +134,6 @@ const Checkout = () => {
         payment_method: ev.paymentMethod.id,
       }
       );
-      setIsProcessing(false); // Re-enable processing after response
 
       if (error) {
         console.error('Payment confirmation error:', error);
