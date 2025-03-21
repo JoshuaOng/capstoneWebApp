@@ -55,7 +55,6 @@ const Checkout = () => {
       })
         .then((res) => res.json())
         .then((data) => setClientSecret(data.clientSecret))
-        .then((data) => console.log(data.clientSecret))
         .then(console.log("successfully fetched secret"))
         .catch((error) => console.error('Error fetching clientSecret:', error));
     }
@@ -99,6 +98,7 @@ const Checkout = () => {
     if (!stripe || !elements || !clientSecret || isProcessing) return;
     setIsProcessing(true); // Disable button to prevent multiple calls  
     console.log("onConfirm called")
+    console.log("clientSecret: ", clientSecret)
     const { error } = await stripe.confirmPayment({
       elements,
       clientSecret,
@@ -127,6 +127,7 @@ const Checkout = () => {
   if (paymentRequest) {
     // Listen to the paymentmethod event
     paymentRequest.on('paymentmethod', async (ev) => {
+      console.log("clientSecret: ", clientSecret)
       if (isProcessing) return; // Prevent duplicate payments
       console.log('Payment method received:', ev.paymentMethod);
       setIsProcessing(true);
